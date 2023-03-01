@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] private Animator unitAnimator;
+
+    private const string IS_WALKING = "IsWalking";
+
     private Vector3 targetPosition;
     private float moveSpeed = 4f;
+    private float rotateSpeed = 10f;
 
     private void Update()
     {
@@ -14,7 +19,12 @@ public class Unit : MonoBehaviour
         {
             Vector3 moveDirection = (targetPosition - transform.position).normalized;
             transform.position += moveSpeed * Time.deltaTime * moveDirection;
+            
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
+            unitAnimator.SetBool(IS_WALKING, true);
         }
+        else
+            unitAnimator.SetBool(IS_WALKING, false);
 
         if (Input.GetMouseButtonDown(0))
         {
