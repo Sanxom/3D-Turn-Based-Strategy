@@ -31,6 +31,11 @@ public class GridObject
         return unitList;
     }
 
+    public bool HasAnyUnit()
+    {
+        return unitList.Count > 0;
+    }
+
     public void AddUnit(Unit unit)
     {
         unitList.Add(unit);

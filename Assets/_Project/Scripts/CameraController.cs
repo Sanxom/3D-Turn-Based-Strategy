@@ -54,18 +54,24 @@ public class CameraController : MonoBehaviour
     private void HandleRotation()
     {
         Vector3 rotationVector = Vector3.zero;
+        float mouseRotationSpeed = 200f;
+        float keyboardRotationSpeed = 100f;
 
         if (Input.GetKey(KeyCode.Q))
         {
             rotationVector.y = -1f;
+            transform.eulerAngles += keyboardRotationSpeed * Time.deltaTime * rotationVector;
         }
         if (Input.GetKey(KeyCode.E))
         {
             rotationVector.y = 1f;
+            transform.eulerAngles += keyboardRotationSpeed * Time.deltaTime * rotationVector;
         }
 
-        float rotationSpeed = 100f;
-        transform.eulerAngles += rotationSpeed * Time.deltaTime * rotationVector;
+        if (Input.GetMouseButton(1))
+        {
+            transform.eulerAngles += mouseRotationSpeed * Time.deltaTime * new Vector3(0, Input.GetAxis("Mouse X"), 0);
+        }
     }
 
     private void HandleZoom()

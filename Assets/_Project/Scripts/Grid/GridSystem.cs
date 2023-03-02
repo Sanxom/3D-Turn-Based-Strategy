@@ -41,6 +41,11 @@ public class GridSystem
         return new GridPosition(Mathf.RoundToInt(worldPosition.x / cellSize), Mathf.RoundToInt(worldPosition.z / cellSize));
     }
 
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        return gridPosition.x >= 0 && gridPosition.z >= 0 && gridPosition.x < width && gridPosition.z < height;
+    }
+
     public void CreateDebugObjects(GameObject debugPrefab)
     {
         for (int x = 0; x < width; x++)
