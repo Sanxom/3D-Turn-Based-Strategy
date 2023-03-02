@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private GridSystem gridSystem;
-
     private void Start()
     {
-        gridSystem = new GridSystem(10, 10, 2);
-
-        print(new GridPosition(5, 7));
+        
     }
 
     private void Update()
     {
-        print(gridSystem.GetGridPosition(MouseWorld.GetPosition()));
+
     }
 }
