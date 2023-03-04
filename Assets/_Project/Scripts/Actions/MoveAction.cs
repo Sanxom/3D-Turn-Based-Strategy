@@ -1,38 +1,48 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
     [SerializeField] private Animator unitAnimator;
     [SerializeField] private int maxMoveDistance = 4;
 
     private const string IS_WALKING = "IsWalking";
 
-    private Unit unit;
     private Vector3 targetPosition;
     private float moveSpeed = 4f;
     private float rotateSpeed = 10f;
     private float stoppingDistance = 0.1f;
 
-    private void Awake()
+    protected override void Awake()
     {
-        unit = GetComponent<Unit>();
+        base.Awake();
         targetPosition = transform.position;
     }
 
     private void Update()
     {
+        if (!isActive)
+            return;
+
+        Vector3 moveDirection = (targetPosition - transform.position).normalized;
+
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
-            Vector3 moveDirection = (targetPosition - transform.position).normalized;
             transform.position += moveSpeed * Time.deltaTime * moveDirection;
 
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
             unitAnimator.SetBool(IS_WALKING, true);
         }
         else
+        {
             unitAnimator.SetBool(IS_WALKING, false);
+            isActive = false;
+            OnActionComplete();
+        }
+
+        transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
     }
 
     public List<GridPosition> GetValidActionGridPositionList()
@@ -79,8 +89,10 @@ public class MoveAction : MonoBehaviour
         return validGridPositionList.Contains(gridPosition);
     }
 
-    public void Move(GridPosition gridPosition)
+    public void Move(GridPosition gridPosition, Action OnActionComplete)
     {
+        this.OnActionComplete = OnActionComplete;
         targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        isActive = true;
     }
 }
