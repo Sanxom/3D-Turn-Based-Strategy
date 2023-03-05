@@ -24,7 +24,22 @@ public class SpinAction : BaseAction
         }
     }
 
-    public void Spin(Action OnActionComplete)
+    public override List<GridPosition> GetValidActionGridPositionList()
+    {
+        GridPosition unitGridPosition = unit.GetGridPosition();
+
+        return new List<GridPosition>
+        {
+            unitGridPosition
+        };
+    }
+
+    public override string GetActionName()
+    {
+        return "Spin";
+    }
+
+    public override void TakeAction(GridPosition gridPosition, Action OnActionComplete)
     {
         this.OnActionComplete = OnActionComplete;
         isActive = true;
